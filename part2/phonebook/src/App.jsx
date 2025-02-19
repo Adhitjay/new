@@ -63,6 +63,7 @@ const Notification = ({ message }) => {
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
+  const [newSName, setSNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [newFilter, setNewFilter] = useState('')
   const [message, setMessage] = useState(null)
@@ -88,6 +89,7 @@ const App = () => {
         const noteObject = {
           name: newName,
           number: newPhone,
+          sname: newSName,
         }
         noteService.update(existingPerson.id, noteObject)
           .then(response => {
@@ -98,6 +100,7 @@ const App = () => {
             }, 5000)
             setNewName('')
             setNewPhone('')
+            setSNewName('')
             console.log(response.data)
           })
           .catch(error => {
@@ -109,6 +112,7 @@ const App = () => {
             }, 5000)
             setNewName('');
             setNewPhone('');
+            setSNewName('');
           })
       }
     }
@@ -117,6 +121,7 @@ const App = () => {
       const noteObject = {
         name: newName,
         number: newPhone,
+        sname: newSName,
       }
       noteService
         .create(noteObject)
@@ -128,6 +133,8 @@ const App = () => {
           }, 5000)
           setNewName('')
           setNewPhone('')
+          setSNewName('')
+         
           console.log(response.data);
         })
         .catch(error => {
@@ -164,6 +171,9 @@ const App = () => {
   const handlePhoneChange = (event) => {
     setNewPhone(event.target.value.trim())
   }
+  const handleSNameChange = (event) => {
+    setSNewName(event.target.value.trim())
+  }
 
   const filteredPersons = persons.filter(person =>
     person.name.toLowerCase().includes(newFilter.toLowerCase())
@@ -172,10 +182,12 @@ const App = () => {
   const handleFilterChange = (event) => {
     setNewFilter(event.target.value)
   }
+  
 
   const data = [
     { text: "name", value: newName, onChange: handleNameChange },
-    { text: "number", value: newPhone, onChange: handlePhoneChange }
+    { text: "number", value: newPhone, onChange: handlePhoneChange },
+    { text: "surname", value: newSName, onChange: handleSNameChange },
   ]
 
 
@@ -186,6 +198,7 @@ const App = () => {
       <Filter value={newFilter} onChange={handleFilterChange} text="filter shown with:" />
       <h3>Add a new</h3>
       <PersonForm onSubmit={addNote} data={data} />
+     
       <h3>Numbers</h3>
       <Persons data={filteredPersons} onClick={removeId} />
     </div>
